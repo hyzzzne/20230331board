@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="com.example.boardtest.mapper.BoardMapper">
+
+    <!-- 게시물 목록 조회 -->
+    <select id = "getBoardList" resultType="com.example.boardtest.BoardDto.BoardDto">
+        select * from simple_board order by no desc
+    </select>
+
+    <insert id = "insertBoard" parameterType="com.example.boardtest.BoardDto.BoardDto">
+        insert into simple_board(
+            no,
+            title,
+            content,
+            writer,
+            hit,
+            regdate)
+        values(
+            seq_simple_board.nextval,
+            #{title},
+            #{content},
+            #{writer},
+            0,
+            sysdate)
+    </insert>
+
+    <!-- 한개 게시물 조회 -->
+    <select id = "getBoardById" parameterType="com.example.boardtest.BoardDto.BoardDto" resultType="com.example.boardtest.BoardDto.BoardDto">
+        select * from simple_board where no=#{no}
+    </select>
+
+    <!-- 게시물 수정 -->
+    <update id = "updateBoard" parameterType="com.example.boardtest.BoardDto.BoardDto">
+        update simple_board
+        set
+            writer=#{writer},
+            title=#{title},
+            content=#{content}
+        where no=#{no}
+    </update>
+
+    <!-- 게시물 삭제 -->
+    <delete id = "deleteBoard" parameterType="int">
+        delete from simple_board where no=#{no}
+    </delete>
+
+</mapper>
