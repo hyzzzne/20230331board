@@ -1,6 +1,7 @@
 package com.example.boardtest.controller;
 
 import com.example.boardtest.BoardDto.BoardDto;
+import com.example.boardtest.BoardDto.BoardInsertDTO;
 import com.example.boardtest.service.IBoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 @Slf4j
 @Controller
@@ -47,12 +51,19 @@ public class BoardController {
     }
 
     @PostMapping("/boardWrite")
-    public String boardWrtie(BoardDto dto) {
+    public String boardWrtie(@RequestBody BoardInsertDTO boardInsertDTO) {
+
+        BoardDto dto = BoardDto.builder()
+                .writer(boardInsertDTO.getWriter())
+                .content(boardInsertDTO.getContent())
+                .title(boardInsertDTO.getTitle())
+                .build();
 
         boardService.insertBoard(dto);
 
-        return "redirect:/board/boardList";
+        return "board";
     }
+    //게시글 상세보기
     //게시글 상세보기
     @GetMapping("/boardView")
     public String getBoardById(@RequestParam(value="no", defaultValue = "1") int no, Model model) {

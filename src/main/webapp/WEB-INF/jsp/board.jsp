@@ -14,9 +14,9 @@
     <!-- Bootstrap Core CSS -->
     <link href='<c:url value="/bootstrap/css/bootstrap.min.css" />' rel="stlesheet">
     <!-- jQuery  -->
-    <script src="/jquery/jquery-3.6.4.min.jss"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src='<c:url value="/bootstrap/js/bootstrap.min.js" />'></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 
     <style type="text/css">
         * {
@@ -79,14 +79,36 @@
 
 </head>
 <body>
+<div id="board">
 <h1 style="text-align:center;">게시물 목록</h1>
-<div style="text-align: center; margin-bottom:5px;">
-    제목/내용 :
-    <input type="text" name="searchText" id="searchText" value="${pageMaker.cri.searchText }"/>
-    <input type="button" id="btnSearch" value="검색"/>
-    <input type="button" value="게시물 작성" onclick="showPopup()"/>
-    </form>
+<div class="container">
+    <div class="row">
+        <form method="post" name="search" action="searchbbs.jsp">
+            <table class="pull-right">
+                <tr>
+                    <td><select class="form-control" name="searchField">
+                        <option value="0">선택</option>
+                        <option value="bbsTitle">제목</option>
+                        <option value="userID">작성자</option>
+                    </select></td>
+                    <td><input type="text" class="form-control"
+                               placeholder="검색어 입력" name="searchText" maxlength="150"></td>
+                    <td>
+                        <button type="submit" class="btn btn-success">검색</button>
+                    </td>
+                    <input type="button" value="게시물 작성" onclick="showPopup()"/>
+                </tr>
+
+            </table>
+        </form>
+    </div>
 </div>
+
+<%--<div style="text-align: center; margin-bottom:5px;">--%>
+<%--    제목/내용 :--%>
+<%--&lt;%&ndash;    <input type="text" name="searchText" id="searchText" value="${pageMaker.cri.searchText }"/>&ndash;%&gt;--%>
+<%--&lt;%&ndash;    <input type="button" id="btnSearch" value="검색"/>&ndash;%&gt;--%>
+<%--    <input type="button" value="게시물 작성" onclick="showPopup()"/>--%>
 <div>
     <table>
         <colgroup>
@@ -99,7 +121,10 @@
         </colgroup>
         <thead>
         <tr>
-            <button type="bytton" class="del">삭제</button>
+            <input type="checkbox" name="ch_all" id="ch_all" value="" onclick="CheckAll();" style="margin-right:10px;">
+            전체선택 |
+            <a href="javascript:if(confirm('정말 삭제하시겠습니까?')) del_all('chk[]');">일괄삭제하기</a>
+            <%--            <button type="bytton" class="del">삭제</button>--%>
             <th><input type="checkbox" class="allCheck"></th>
             <th>번호</th>
             <th>제목</th>
@@ -172,7 +197,8 @@
     <input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
     <input type='hidden' name='searchText' value='<c:out value="${ pageMaker.cri.searchText}"/>'>
 </form>
-
+</div>
+</div>
 <script type="text/javascript">
 
     function showPopup() {
@@ -183,23 +209,23 @@
     var allCheck = document.querySelector(".allCheck");
     var list = document.querySelectorAll(".check");
 
-    allCheck.onclick=()=>{
-        if(allCheck.checked){
-            for(var i =0; i<list.length; i++){
-                list[i].checked=true;
+    allCheck.onclick = () => {
+        if (allCheck.checked) {
+            for (var i = 0; i < list.length; i++) {
+                list[i].checked = true;
             }
-        }else{
-            for(var i=0; i<list.length; i++){
+        } else {
+            for (var i = 0; i < list.length; i++) {
                 list[i].checked = false;
             }
         }
     } //allCheck.onclick
 
     //선택삭제
-    var del =document.querySelector(".del");
+    var del = document.querySelector(".del");
     del.onclick = () => {
-        for(var i =0; i<length; i++){
-            if(list[i].checked){
+        for (var i = 0; i < length; i++) {
+            if (list[i].checked) {
                 list[i].parentElement.parentElement.remove();
             }
         }
@@ -229,6 +255,7 @@
         /*
         $("#regBtn").on("click", function() {
             self.location = "
+
         ${pageContext.request.contextPath}/board/boardWrite.do";
 		});
 		*/
@@ -247,6 +274,10 @@
             actionForm.submit();
         });
     });
+
+    function renderingDiv() {
+        $('#board').load(location.href + '#board');
+    }
 </script>
 </body>
 </html>

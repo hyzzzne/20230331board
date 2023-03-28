@@ -4,6 +4,7 @@
 <html>
 <head>
     <meta content="text/html; charset=UTF-8"></meta>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <title>게시물 작성</title>
     <style type="text/css">
         * {
@@ -40,7 +41,7 @@
 <body>
 <h1 style="text-align:center;">게시물 작성</h1>
 <div>
-    <form name="boardForm" action="<%="/board/boardWrite"%>" ;
+    <form name="boardForm" action="/board/boardWrite" ;
           method="post"
           enctype="multipart/form-data">
         <table>
@@ -62,23 +63,52 @@
             <tr>
                 <th align="center">내용</th>
                 <td>
-							<textarea name="content" cols="500" rows="10">
-							</textarea>
+                    <textarea name="content" cols="500" rows="10"></textarea>
                     <script>CKEDITOR.replace('content');</script>
                 </td>
             </tr>
             </tbody>
         </table>
-        <p class="btn_align">
-            <input type="submit" value="저장"/>
-            <input type="button" value="목록" onclick="goUrl('<c:url value="board.jsp"/>');"/>
-        </p>
     </form>
+    <div style="text-align: center">
+        <button id="send">저장</button>
+    </div>
 </div>
+
 <script type="text/javascript">
     function goUrl(url) {
         location.href = url;
     }
+
+    document.getElementById("send").addEventListener("click", function() {
+
+
+        const formData = {
+            writer : $("input[name=writer]").val(),
+            content : $("textarea[name=content]").val(),
+            title : $("input[name=title]").val()
+        }
+
+        console.log(formData)
+
+        $.ajax({
+            type : 'post',
+            url : '/board/boardWrite',
+            data : JSON.stringify(formData),
+            contentType: "application/json; charset=utf-8;",
+            success : function() {
+                window.opener.renderingDiv();
+                window.close();
+            },
+            error : function(xhr, status, error) {
+                console.log(error);
+                // window.opener.reloadDiv();
+                // window.close();
+            }
+
+        });
+
+    })
 
     // 등록 폼 체크
     function boardWriteCheck() {

@@ -128,6 +128,12 @@
 </div>
 
 <script type="text/javascript">
+
+    function showPopup() {
+        var windowOpen = window.open('/board/boardView', "팝업 테스트",
+            "width=700, height=500, top=10, left=10");
+    }
+
     $(document).ready(function () {
         var operForm = $("#modifyForm");
         // 목록
