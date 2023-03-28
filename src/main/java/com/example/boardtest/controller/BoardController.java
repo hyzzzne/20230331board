@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/board")
@@ -41,7 +42,7 @@ public class BoardController {
 
     //글쓰기 팝업창
     @GetMapping("/insertPopup")
-    public String insertPopup(){
+    public String insertPopup() {
         return "boardWriteForm";
     }
 
@@ -63,10 +64,11 @@ public class BoardController {
 
         return "board";
     }
+
     //게시글 상세보기
     //게시글 상세보기
     @GetMapping("/boardView")
-    public String getBoardById(@RequestParam(value="no", defaultValue = "1") int no, Model model) {
+    public String getBoardById(@RequestParam(value = "no", defaultValue = "1") int no, Model model) {
         BoardDto dto = new BoardDto();
         dto.setNo(no);
         BoardDto boardDto = boardService.getBoardById(dto);
@@ -76,24 +78,24 @@ public class BoardController {
 
     @GetMapping("/boardModify")
     public String updateBoardForm(BoardDto vo,
-                                  Model model){
+                                  Model model) {
 
         BoardDto boardVo = boardService.getBoardById(vo);
         model.addAttribute("board", boardVo);
-        return "/boardModifyForm";	// boardModify.jsp
+        return "/boardModifyForm";    // boardModify.jsp
     }
 
     // 수정한 내용을 데이터베이스에 반영하는 메소드
     @PostMapping("/boardModify")
-    public String boardModify(BoardDto vo){
+    public String boardModify(BoardDto vo) {
 
         boardService.updateBoard(vo); // 수정
         return "redirect:/board/boardList";// 저장후 목록 출력 컨트롤러 호출
     }
 
     // 게시물을 삭제해주는 메소드(핸들러)
-    @RequestMapping(value="/boardDelete", method = RequestMethod.GET)
-    public String boardDelete(BoardDto vo){
+    @RequestMapping(value = "/boardDelete", method = RequestMethod.GET)
+    public String boardDelete(BoardDto vo) {
         boardService.deleteBoard(vo);
         return "redirect:/board/boardList"; // 저장후 목록 출력 컨트롤러 호출
     }
