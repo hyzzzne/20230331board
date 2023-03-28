@@ -85,7 +85,6 @@
     <input type="text" name="searchText" id="searchText" value="${pageMaker.cri.searchText }"/>
     <input type="button" id="btnSearch" value="검색"/>
     <input type="button" value="게시물 작성" onclick="showPopup()"/>
-
     </form>
 </div>
 <div>
@@ -100,6 +99,7 @@
         </colgroup>
         <thead>
         <tr>
+            <button type="bytton" class="del">삭제</button>
             <th><input type="checkbox" class="allCheck"></th>
             <th>번호</th>
             <th>제목</th>
@@ -179,6 +179,31 @@
         var windowOpen = window.open('/board/insertPopup', "팝업 테스트",
             "width=700, height=500, top=10, left=10");
     }
+
+    var allCheck = document.querySelector(".allCheck");
+    var list = document.querySelectorAll(".check");
+
+    allCheck.onclick=()=>{
+        if(allCheck.checked){
+            for(var i =0; i<list.length; i++){
+                list[i].checked=true;
+            }
+        }else{
+            for(var i=0; i<list.length; i++){
+                list[i].checked = false;
+            }
+        }
+    } //allCheck.onclick
+
+    //선택삭제
+    var del =document.querySelector(".del");
+    del.onclick = () => {
+        for(var i =0; i<length; i++){
+            if(list[i].checked){
+                list[i].parentElement.parentElement.remove();
+            }
+        }
+    } //end
 
     $(document).ready(function () {
         var result = '<c:out value="${result}"/>';
