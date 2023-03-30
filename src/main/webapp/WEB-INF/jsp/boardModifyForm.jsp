@@ -48,27 +48,6 @@
         }
     </style>
 
-    <script type="text/javascript">
-        function goUrl(url) {
-            location.href = url;
-        }
-
-        // 수정 폼 체크
-        function boardModifyCheck() {
-            var form = document.modifyForm;
-            if (form.title.value == '') {
-                alert('제목을 입력하세요.');
-                form.title.focus();
-                return false;
-            }
-            if (form.writer.value == '') {
-                alert('작성자를 입력하세요');
-                form.writer.focus();
-                return false;
-            }
-            return true;
-        }
-    </script>
 </head>
 <body>
 <h1 style="text-align:center;">게시물 수정</h1>
@@ -132,6 +111,25 @@
     function showPopup() {
         var windowOpen = window.open('/board/boardView', "팝업 테스트",
             "width=700, height=500, top=10, left=10");
+    }
+    function goUrl(url) {
+        location.href = url;
+    }
+
+    // 수정 폼 체크
+    function boardModifyCheck() {
+        var form = document.modifyForm;
+        if (form.title.value == '') {
+            alert('제목을 입력하세요.');
+            form.title.focus();
+            return false;
+        }
+        if (form.writer.value == '') {
+            alert('작성자를 입력하세요');
+            form.writer.focus();
+            return false;
+        }
+        return true;
     }
 
     $(document).ready(function () {

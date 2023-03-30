@@ -14,9 +14,9 @@
     <!-- Bootstrap Core CSS -->
     <link href='<c:url value="/bootstrap/css/bootstrap.min.css" />' rel="stlesheet">
     <!-- jQuery  -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src='<c:url value="/bootstrap/js/bootstrap.min.js" />'></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
 
     <style type="text/css">
         * {
@@ -56,149 +56,106 @@
             background-color: #dce7e6;
         }
     </style>
-
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            $('body').addClass('backColor');
-
-            // 검색 버튼 클릭 이벤트 핸들러(리스너)
-            $('#btnSearch').on('click', function () {
-
-                // 검색 키워드 널 체크
-                let searchText = $('#searchText').val();
-                if (searchText == "" || searchText == null || searchText == undefined || searchText.length < 1) {
-                    alert('검색어를 입력하세요.');
-                    $("#searchText").focus();
-                    return false;
-                }
-                $('#searchForm').submit();
-            });
-        });
-    </script>
-
 </head>
 <body>
 <div id="board">
-<h1 style="text-align:center;">게시물 목록</h1>
-<div class="container">
-    <div class="row">
-        <form method="post" name="search" action="searchbbs.jsp">
-            <table class="pull-right">
-                <tr>
-                    <td><select class="form-control" name="searchField">
-                        <option value="0">선택</option>
-                        <option value="bbsTitle">제목</option>
-                        <option value="userID">작성자</option>
-                    </select></td>
-                    <td><input type="text" class="form-control"
-                               placeholder="검색어 입력" name="searchText" maxlength="150"></td>
-                    <td>
-                        <button type="submit" class="btn btn-success">검색</button>
-                    </td>
-                    <input type="button" value="게시물 작성" onclick="showPopup()"/>
-                </tr>
-
-            </table>
+    <h1 style="text-align:center;">게시물 목록</h1>
+<%--    <div class="container">--%>
+<%--        <div class="row">--%>
+<%--            <form method="post" name="search" action="searchbbs.jsp">--%>
+<%--                <table class="pull-right">--%>
+<%--                    <tr>--%>
+<%--                        <td><select class="form-control" name="searchField">--%>
+<%--                            <option value="0">선택</option>--%>
+<%--                            <option value="bbsTitle">제목</option>--%>
+<%--                            <option value="userID">작성자</option>--%>
+<%--                        </select></td>--%>
+<%--                        <td><input type="text" class="form-control"--%>
+<%--                                   placeholder="검색어 입력" name="searchText" maxlength="150"></td>--%>
+<%--                        <td>--%>
+<%--                            <button type="submit" class="btn btn-success">검색</button>--%>
+<%--                        </td>--%>
+<%--                        <input type="button" value="게시물 작성" onclick="showPopup()"/>--%>
+<%--                    </tr>--%>
+<%--                </table>--%>
+<%--            </form>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+    <div style="text-align: center; margin-bottom:5px;">
+        <!-- 검색폼 -->
+        <form id="searchForm" action="<c:out value="/board/searchForm" />" method="get">
+            제목/내용 :
+            <input type="text" name="searchText" id="searchText" value="${pageMaker.cri.searchText }"/>
+            <input type="button" id="btnSearch" value="검색" />
+            <input type="button" onclick="location.href='<c:out value="/board/boardList" />'" value="전체보기" />
+            <input type="button" value="게시물 작성" onclick="showPopup()"/>
         </form>
+    </div>
+        <table>
+            <colgroup>
+                <col width="60s"/>
+                <col width="50"/>
+                <col width="200"/>
+                <col width="200"/>
+                <col width="200"/>
+                <col width="200"/>
+            </colgroup>
+            <thead>
+            <tr>
+                <input type="button" value="선택삭제" class="btn btn-outline-info" onclick="deleteCheck()"/>
+                <th><input type="checkbox" class="allCheck"></th>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+                <th>등록 일시</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:choose>
+                <c:when test="${boardList.size() <= 0}">
+                    <tr>
+                        <td align="center" colspan="5">등록된 게시물이 없습니다.</td>
+                    </tr>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="board" items="${boardList}" varStatus="i">
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="check">
+                            </td>
+                            <td align="center">
+                                <c:out value="${i.count}"/>
+                            </td>
+                            <td>
+                                <a class="move" href='<c:out value="/board/boardView?no=${board.no}"/>'>
+                                    <c:out value="${board.title}"/>
+                                </a>
+                            </td>
+                            <td align="center">
+                                <c:out value="${board.writer}"/>
+                            </td>
+                            <td align="center">
+                                <c:out value="${board.hit}"/>
+                            </td>
+                            <td align="center">
+                                <c:out value="${board.regDate}"/>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
+            </tbody>
+        </table>
+    </div>
+    <!-- 페이징 or 페이지네이션 시작 -->
+    <div style="text-align: center;">
+        <ul class="pagination">
+
+        </ul>
     </div>
 </div>
 
-<%--<div style="text-align: center; margin-bottom:5px;">--%>
-<%--    제목/내용 :--%>
-<%--&lt;%&ndash;    <input type="text" name="searchText" id="searchText" value="${pageMaker.cri.searchText }"/>&ndash;%&gt;--%>
-<%--&lt;%&ndash;    <input type="button" id="btnSearch" value="검색"/>&ndash;%&gt;--%>
-<%--    <input type="button" value="게시물 작성" onclick="showPopup()"/>--%>
-<div>
-    <table>
-        <colgroup>
-            <col width="60s"/>
-            <col width="50"/>
-            <col width="200"/>
-            <col width="200"/>
-            <col width="200"/>
-            <col width="200"/>
-        </colgroup>
-        <thead>
-        <tr>
-            <input type="checkbox" name="ch_all" id="ch_all" value="" onclick="CheckAll();" style="margin-right:10px;">
-            전체선택 |
-            <a href="javascript:if(confirm('정말 삭제하시겠습니까?')) del_all('chk[]');">일괄삭제하기</a>
-            <%--            <button type="bytton" class="del">삭제</button>--%>
-            <th><input type="checkbox" class="allCheck"></th>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>조회수</th>
-            <th>등록 일시</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:choose>
-            <c:when test="${boardList.size() <= 0}">
-                <tr>
-                    <td align="center" colspan="5">등록된 게시물이 없습니다.</td>
-                </tr>
-            </c:when>
-            <c:otherwise>
-                <c:forEach var="board" items="${boardList}" varStatus="i">
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="check">
-                        </td>
-                        <td align="center">
-                            <c:out value="${i.count}"/>
-                        </td>
-                        <td>
-                            <a class="move" href='<c:out value="/board/boardView?no=${board.no}"/>'>
-                                <c:out value="${board.title}"/>
-                            </a>
-                        </td>
-                        <td align="center">
-                            <c:out value="${board.writer}"/>
-                        </td>
-                        <td align="center">
-                            <c:out value="${board.hit}"/>
-                        </td>
-                        <td align="center">
-                            <c:out value="${board.regDate}"/>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </c:otherwise>
-        </c:choose>
-        </tbody>
-    </table>
-</div>
-<!-- 페이징 or 페이지네이션 시작 -->
-<div style="text-align: center;">
-    <ul class="pagination">
-        <c:if test="${pageMaker.prev}">
-            <li class="paginate_button previous">
-                <a href="${pageMaker.startPage -1}">Previous</a></li>
-        </c:if>
-        <!-- 페이지 버튼 시작번호 ~ 끝번호 반복문 -->
-        <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-            <li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
-                <a href="${num}">${num}</a>
-            </li>
-        </c:forEach>
-
-        <c:if test="${pageMaker.next}">
-            <li class="paginate_button next"><a
-                    href="${pageMaker.endPage +1 }">Next</a></li>
-        </c:if>
-    </ul>
-</div>
-<!-- 페이징 or 페이지네이션 종료 -->
-<
-<form id='actionForm' action="/board" method='get'>
-    <input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
-    <input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
-    <input type='hidden' name='searchText' value='<c:out value="${ pageMaker.cri.searchText}"/>'>
-</form>
-</div>
-</div>
 <script type="text/javascript">
 
     function showPopup() {
@@ -206,9 +163,26 @@
             "width=700, height=500, top=10, left=10");
     }
 
+    $(document).ready(function () {
+        $('body').addClass('backColor');
+        // 검색 버튼 클릭 이벤트 핸들러(리스너)
+        $('#btnSearch').on('click', function () {
+
+            // 검색 키워드 널 체크
+            let searchText = $('#searchText').val();
+            if (searchText == "" || searchText == null || searchText == undefined || searchText.length < 1) {
+                alert('검색어를 입력하세요.');
+                $("#searchText").focus();
+                return false;
+            }
+            $('#searchForm').submit();
+        });
+    });
+
     var allCheck = document.querySelector(".allCheck");
     var list = document.querySelectorAll(".check");
 
+    //ES6문법/function생략 =>화살표 함수 사용으로 간결함
     allCheck.onclick = () => {
         if (allCheck.checked) {
             for (var i = 0; i < list.length; i++) {
@@ -255,6 +229,8 @@
         /*
         $("#regBtn").on("click", function() {
             self.location = "
+
+
 
         ${pageContext.request.contextPath}/board/boardWrite.do";
 		});

@@ -20,5 +20,6 @@ public class BoardDto {
     private String content;
     private Date regDate;
     private int hit;
+    private String searchText = "" ; 	// 검색 키워드
 
 }

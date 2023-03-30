@@ -80,27 +80,27 @@
         location.href = url;
     }
 
-    document.getElementById("send").addEventListener("click", function() {
+    document.getElementById("send").addEventListener("click", function () {
 
 
         const formData = {
-            writer : $("input[name=writer]").val(),
-            content : $("textarea[name=content]").val(),
-            title : $("input[name=title]").val()
+            writer: $("input[name=writer]").val(),
+            content: $("textarea[name=content]").val(),
+            title: $("input[name=title]").val()
         }
 
         console.log(formData)
 
         $.ajax({
-            type : 'post',
-            url : '/board/boardWrite',
-            data : JSON.stringify(formData),
+            type: 'post',
+            url: '/board/boardWrite',
+            data: JSON.stringify(formData),
             contentType: "application/json; charset=utf-8;",
-            success : function() {
+            success: function () {
                 window.opener.renderingDiv();
                 window.close();
             },
-            error : function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log(error);
                 // window.opener.reloadDiv();
                 // window.close();

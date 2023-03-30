@@ -21,5 +21,5 @@ public interface IBoardService {
 //    void updateHit(BoardDto vo);					// 글조회수 증가
     //int getTotalBoardCount(Criteria cri);					// 전체 게시물 숫자
 
-    //List<BoardDto> getListPagingAndSearching(Criteria cri);
+    List<BoardDto> getListPagingAndSearching(BoardDto vo);
 }

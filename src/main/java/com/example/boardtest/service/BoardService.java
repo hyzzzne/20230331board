@@ -10,38 +10,48 @@ import java.util.List;
 
 @Slf4j
 @Service("BoardService")
-public class BoardService implements IBoardService{
+public class BoardService implements IBoardService {
     private final BoardMapper boardMapper;
 
     @Autowired
-    public BoardService(BoardMapper boardMapper){
+    public BoardService(BoardMapper boardMapper) {
         this.boardMapper = boardMapper;
     }
 
     @Override
-    public List<BoardDto> getBoardList(BoardDto vo){
+    public List<BoardDto> getBoardList(BoardDto vo) {
 
         return boardMapper.getBoardList(vo);
     }
 
     @Override
-    public int insertBoard(BoardDto vo){
+    public int insertBoard(BoardDto vo) {
         int result = 0;
         result = this.boardMapper.insertBoard(vo);
 
         return result;
 
     }
+
     @Override
     public BoardDto getBoardById(BoardDto vo) {
         return this.boardMapper.getBoardById(vo);
     }
+
     @Override
     public void updateBoard(BoardDto vo) {
         this.boardMapper.updateBoard(vo);
     }
+
     @Override
     public void deleteBoard(BoardDto vo) {
         this.boardMapper.deleteBoard(vo);
+    }
+
+    // 페이징 처리를 위한 게시물 목록 조회
+    @Override
+    public List<BoardDto> getListPagingAndSearching(BoardDto vo) {
+        List<BoardDto> boardList = boardMapper.getListPagingAndSearching(vo);
+        return boardList;
     }
 }

@@ -66,7 +66,6 @@ public class BoardController {
     }
 
     //게시글 상세보기
-    //게시글 상세보기
     @GetMapping("/boardView")
     public String getBoardById(@RequestParam(value = "no", defaultValue = "1") int no, Model model) {
         BoardDto dto = new BoardDto();
@@ -97,7 +96,16 @@ public class BoardController {
     @RequestMapping(value = "/boardDelete", method = RequestMethod.GET)
     public String boardDelete(BoardDto vo) {
         boardService.deleteBoard(vo);
-        return "redirect:/board/boardList"; // 저장후 목록 출력 컨트롤러 호출
+        return "redirect:/board/boardList";
+    }
+
+    @GetMapping("/searchForm")
+    public String getListPaging(BoardDto vo, Model model){
+
+        List<BoardDto> boardList = boardService.getListPagingAndSearching(vo);
+        model.addAttribute("boardList", boardList);
+
+        return "board";	// jsp 페이지
     }
 
 

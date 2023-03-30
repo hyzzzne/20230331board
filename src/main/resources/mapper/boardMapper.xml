@@ -47,4 +47,21 @@
         delete from simple_board where no=#{no}
     </delete>
 
+    <!-- 게시물 목록 조회(페이징 + 검색 기능 추가) -->
+    <select id="getListPagingAndSearching" parameterType="com.example.boardtest.BoardDto.BoardDto" resultType="com.example.boardtest.BoardDto.BoardDto">
+	  <![CDATA[
+        select
+            no, title, content, writer, hit, regdate
+        from
+            (
+            select /*+INDEX_DESC(simple_board SIMPLE_BOARD_PK) */
+            rownum rn, no, title, content, writer, hit, regdate
+            from
+            simple_board
+            where
+            (title like '%'||#{searchText}||'%' or content like '%'||#{searchText}||'%')
+            )
+        ]]>
+	</select>
+
 </mapper>

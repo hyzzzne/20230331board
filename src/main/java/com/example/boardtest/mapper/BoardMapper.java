@@ -12,7 +12,7 @@ import java.util.List;
 public interface BoardMapper {
     List<BoardDto> getBoardList(BoardDto vo);		// 글 목록 조회
 
-//    List<Dto> getListPagingAndSearching(Criteria cri);	// 글 목록 조회(Criteria 객체 사용)	
+    List<BoardDto> getListPagingAndSearching(BoardDto vo);	// 글 목록 조회(Criteria 객체 사용)
     int insertBoard(BoardDto vo);				// 글 등록
     void updateBoard(BoardDto vo);				// 글 수정
     void deleteBoard(BoardDto vo);				// 글 삭제
