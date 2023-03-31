@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDto {
-
     private int no;
     private String title;
     private String writer;

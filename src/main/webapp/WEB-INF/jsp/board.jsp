@@ -230,8 +230,6 @@
         $("#regBtn").on("click", function() {
             self.location = "
 
-
-
         ${pageContext.request.contextPath}/board/boardWrite.do";
 		});
 		*/

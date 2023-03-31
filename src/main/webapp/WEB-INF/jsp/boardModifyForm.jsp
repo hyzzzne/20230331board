@@ -99,7 +99,6 @@
             </tbody>
         </table>
         <p class="btn_align">
-            <%-- <input type="button" value="목록" onclick="goUrl('<c:url value="/board/boardList.do" />');" /> --%>
             <button data-oper='list' value="목록">목록</button>
             <input type="submit" value="저장"/>
         </p>
